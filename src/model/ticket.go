@@ -1,4 +1,4 @@
-package parkinglot
+package model
 
 type Ticket struct {
 	vehicle     Vehicle
