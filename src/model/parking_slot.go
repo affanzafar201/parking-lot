@@ -1,5 +1,9 @@
 package model
 
+import (
+	"errors"
+)
+
 type ParkingSlot struct {
 	occupied bool
 	slotNo   int
@@ -22,16 +26,20 @@ func (p *ParkingSlot) GetSlotNo() int {
 	return p.slotNo
 }
 
-func (p *ParkingSlot) isAvailable() bool {
+func (p *ParkingSlot) IsAvailable() bool {
 	return !p.occupied
 }
 
-func (p *ParkingSlot) freeParkingSpot() {
+func (p *ParkingSlot) FreeParkingSlot() {
 	p.occupied = false
 	p.vehicle = nil
 }
 
-func (p *ParkingSlot) allotCarToSlot(v *Vehicle) {
-	p.occupied = true
-	p.vehicle = v
+func (p *ParkingSlot) AllotVehicle(v *Vehicle) error {
+	if p.IsAvailable() {
+		p.occupied = true
+		p.vehicle = v
+		return nil
+	}
+	return errors.New("Slot is not empty")
 }
