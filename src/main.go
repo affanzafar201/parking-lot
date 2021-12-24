@@ -10,7 +10,6 @@ import (
 func main() {
 	parkingServiceProcessor := new(processor.Processor)
 
-	parkingServiceProcessor.WelcomeMessage()
 	if len(os.Args) > 1 && os.Args[1] != "" {
 		FileProcessor(os.Args[1])
 	} else {

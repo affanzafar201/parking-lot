@@ -16,10 +16,6 @@ func (p *Processor) setParkingLot(parkingLot *model.ParkingLot) {
 	p.parkingLot = parkingLot
 }
 
-func (p *Processor) WelcomeMessage() {
-	fmt.Println("===============Welocome to GoJek Parking Lot================")
-	fmt.Println("============================================================")
-}
 func (p *Processor) Execute(input string) {
 	inputs := strings.Split(input, " ")
 
@@ -46,9 +42,9 @@ func (p *Processor) Execute(input string) {
 		if len(inputs) == 3 {
 			newSlot, err := p.parkingLot.ParkVehicle(model.NewVehicle(inputs[1], inputs[2]))
 			if err != nil {
-				fmt.Println(fmt.Errorf("Park car failed with error: %v", err))
+				fmt.Println(fmt.Errorf("Sorry, parking lot is full"))
 			} else {
-				fmt.Println("Allocated slot no.", newSlot.GetSlotNo())
+				fmt.Println("Allocated slot number:", newSlot.GetSlotNo())
 			}
 		} else {
 			if len(inputs) == 1 {
@@ -68,7 +64,7 @@ func (p *Processor) Execute(input string) {
 				if err != nil {
 					fmt.Println(fmt.Errorf("Leave car from slot failed with err: %v", err))
 				} else {
-					fmt.Printf("SlotNo %d is free\n", slotNo)
+					fmt.Printf("Slot number %d is free\n", slotNo)
 				}
 			}
 		} else {
@@ -112,9 +108,9 @@ func (p *Processor) GetStatus() {
 		return
 	}
 	listOccupiedSlots := p.parkingLot.GetFilledSlots()
-	var list = []string{fmt.Sprintf("%-12s%-20s%-10s", "Slot No.", "Registration No", "Colour")}
+	var list = []string{fmt.Sprintf("%-8s    %-15s    %s", "Slot No.", "Registration No", "Colour")}
 	for _, occupiedSlot := range listOccupiedSlots {
-		list = append(list, fmt.Sprintf("%-12v%-20v%-10v", occupiedSlot.GetSlotNo(), occupiedSlot.GetVehicle().GetRegistrationNo(), occupiedSlot.GetVehicle().GetColor()))
+		list = append(list, fmt.Sprintf("%-8v    %-15v    %v", occupiedSlot.GetSlotNo(), occupiedSlot.GetVehicle().GetRegistrationNo(), occupiedSlot.GetVehicle().GetColor()))
 	}
 	output := strings.Join(list, "\n")
 	fmt.Println(output)
@@ -130,8 +126,7 @@ func (p *Processor) GetRegistrationNoForColor(color string) {
 	for _, occupiedSlot := range listOccupiedSlots {
 		list = append(list, fmt.Sprintf(occupiedSlot.GetVehicle().GetRegistrationNo()))
 	}
-	output := strings.Join(list, ",")
-	fmt.Printf("Registration no for cars in parking lot with %s color : ", color)
+	output := strings.Join(list, ", ")
 	fmt.Println(output)
 }
 
@@ -145,8 +140,7 @@ func (p *Processor) GetSlotNoFromColor(color string) {
 	for _, occupiedSlot := range listOccupiedSlots {
 		list = append(list, fmt.Sprintf("%d", occupiedSlot.GetSlotNo()))
 	}
-	output := strings.Join(list, ",")
-	fmt.Printf("Slots no for cars in parking lot with %s color : ", color)
+	output := strings.Join(list, ", ")
 	fmt.Println(output)
 }
 
@@ -157,8 +151,8 @@ func (p *Processor) GetSlotNoFromRegistrationNo(regNo string) {
 	}
 	occupiedSlot, err := p.parkingLot.GetSlotByVehicleRegistrationNo(regNo)
 	if err != nil {
-		fmt.Printf("Slots no for cars in parking lot with %s registration No : is %v \n", regNo, err)
+		fmt.Println("Not found")
 		return
 	}
-	fmt.Printf("Slots no for cars in parking lot with %s registration No : %d \n", regNo, occupiedSlot.GetSlotNo())
+	fmt.Println(occupiedSlot.GetSlotNo())
 }
