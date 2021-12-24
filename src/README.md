@@ -1,4 +1,4 @@
-# Go-Jek Parking Lot Assignment (Python)
+# Parking Lot Assignment (Golang)
 
 ## 1. Problem Statment
 Design a Parking lot which can hold `n` Cars. Every car been issued a ticket for a slot and the slot been assigned based on the nearest to the entry. The system should also return some queries such as:
