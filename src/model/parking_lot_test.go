@@ -6,8 +6,8 @@ import (
 	"testing"
 )
 
-func TestCreateParkingLot(t *testing.T) {
-	testParkingLot := CreateParkingLot(6)
+func TestNewParkingLot(t *testing.T) {
+	testParkingLot := NewParkingLot(6)
 	if testParkingLot == nil {
 		t.Errorf("Failed to create parking lot")
 	} else if testParkingLot.capacity != 6 {

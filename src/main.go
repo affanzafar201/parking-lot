@@ -8,11 +8,13 @@ import (
 )
 
 func main() {
-	v := new(processor.Processor)
+	parkingServiceProcessor := new(processor.Processor)
+	parkingServiceProcessor.WelcomeMessage()
+
 	for {
 		reader := bufio.NewReader(os.Stdin)
 		input, _ := reader.ReadString('\n')
 		input = strings.TrimRight(input, "\n")
-		v.Execute(input)
+		parkingServiceProcessor.Execute(input)
 	}
 }
