@@ -1,12 +1,18 @@
 package main
 
 import (
-	"fmt"
-	"model"
+	"bufio"
+	"os"
+	"processor"
+	"strings"
 )
 
 func main() {
-	fmt.Println("vim-go")
-	v := model.NewVehicle("Abcd", "brown")
-	fmt.Printf("%+v", v)
+	v := new(processor.Processor)
+	for {
+		reader := bufio.NewReader(os.Stdin)
+		input, _ := reader.ReadString('\n')
+		input = strings.TrimRight(input, "\n")
+		v.Execute(input)
+	}
 }
