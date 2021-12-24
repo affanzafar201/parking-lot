@@ -2,7 +2,16 @@ package model
 
 type ParkingSlot struct {
 	occupied bool
+	slotNo   int
 	vehicle  *Vehicle
+}
+
+func NewParkingSlot(slotNo int) *ParkingSlot {
+	p := new(ParkingSlot)
+	p.occupied = false
+	p.slotNo = slotNo
+	p.vehicle = nil
+	return p
 }
 
 func (p *ParkingSlot) isAvailable() bool {
