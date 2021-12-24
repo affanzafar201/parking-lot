@@ -37,7 +37,7 @@ To prints the slot number of the cars for the given colour.  Where `colour` is g
 #### 4.1 Running the application in File mode:
 
 ```golang
-bin/main 
+bin/parking_lot input.txt 
 ```
 
 #### 4.2 Running the application in Interactive mode:
