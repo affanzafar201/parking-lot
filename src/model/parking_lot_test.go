@@ -10,8 +10,8 @@ func TestNewParkingLot(t *testing.T) {
 	testParkingLot := NewParkingLot(6)
 	if testParkingLot == nil {
 		t.Errorf("Failed to create parking lot")
-	} else if testParkingLot.capacity != 6 {
-		t.Errorf("Failed to create parking lot with want capacity %v, got %v", testParkingLot.capacity, 6)
+	} else if testParkingLot.GetCapacity() != 6 {
+		t.Errorf("Failed to create parking lot with want capacity %v, got %v", 6, testParkingLot.GetCapacity())
 	}
 }
 
@@ -218,6 +218,212 @@ func TestUnparkVehicle(t *testing.T) {
 		})
 	}
 }
-func TestGetRegistrationNoForColor(t *testing.T) {
 
+func TestGetSlotsByColor(t *testing.T) {
+	type parklot struct {
+		capacity int
+		slots    []*ParkingSlot
+	}
+	type testVehicle struct {
+		car Vehicle
+	}
+	tests := []struct {
+		name      string
+		parklot   parklot
+		args      string
+		want      *ParkingSlot
+		wantSlots int
+	}{
+		{
+			"TestCase 1: Parking slots is not empty",
+			parklot{
+				capacity: 3,
+				slots: []*ParkingSlot{
+					{
+						occupied: false,
+						slotNo:   1,
+						vehicle:  nil,
+					},
+					{
+						occupied: false,
+						slotNo:   2,
+						vehicle:  nil,
+					},
+					{
+						occupied: true,
+						slotNo:   3,
+						vehicle:  &Vehicle{registrationNo: "KA01-1498", color: "Red"},
+					},
+				},
+			},
+			"Red",
+			&ParkingSlot{
+				occupied: true,
+				slotNo:   3,
+				vehicle:  &Vehicle{registrationNo: "KA01-1498", color: "Red"},
+			},
+			1,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			testParkingLot := &ParkingLot{
+				capacity: test.parklot.capacity,
+				slots:    test.parklot.slots,
+			}
+			occupiedSlots := testParkingLot.GetSlotsByVehicleColor(test.args)
+			if len(occupiedSlots) != test.wantSlots || !reflect.DeepEqual(occupiedSlots[0], test.want) {
+				t.Errorf("\x1b[31;1mParkingLot.GetSlotByVehicleColor() error = , wantSlots %v", test.wantSlots)
+			}
+		})
+	}
+}
+func TestGetSlotByVehicleRegistrationNo(t *testing.T) {
+	type parklot struct {
+		capacity int
+		slots    []*ParkingSlot
+	}
+	type testVehicle struct {
+		car Vehicle
+	}
+	tests := []struct {
+		name    string
+		parklot parklot
+		args    string
+		want    *ParkingSlot
+		wantErr bool
+	}{
+		{
+			"TestCase 1: Vehicle present in parking lot",
+			parklot{
+				capacity: 3,
+				slots: []*ParkingSlot{
+					{
+						occupied: false,
+						slotNo:   1,
+						vehicle:  nil,
+					},
+					{
+						occupied: false,
+						slotNo:   2,
+						vehicle:  nil,
+					},
+					{
+						occupied: true,
+						slotNo:   3,
+						vehicle:  &Vehicle{registrationNo: "KA01-1498", color: "Red"},
+					},
+				},
+			},
+			"KA01-1498",
+			&ParkingSlot{
+				occupied: true,
+				slotNo:   3,
+				vehicle:  &Vehicle{registrationNo: "KA01-1498", color: "Red"},
+			},
+			false,
+		},
+		{
+			"TestCase 2: Vehicle not present in parking lot",
+			parklot{
+				capacity: 3,
+				slots: []*ParkingSlot{
+					{
+						occupied: false,
+						slotNo:   1,
+						vehicle:  nil,
+					},
+					{
+						occupied: false,
+						slotNo:   2,
+						vehicle:  nil,
+					},
+					{
+						occupied: true,
+						slotNo:   3,
+						vehicle:  &Vehicle{registrationNo: "KA01-1498", color: "Red"},
+					},
+				},
+			},
+			"KA01-12298",
+			nil,
+			true,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			testParkingLot := &ParkingLot{
+				capacity: test.parklot.capacity,
+				slots:    test.parklot.slots,
+			}
+			occupiedSlots, err := testParkingLot.GetSlotByVehicleRegistrationNo(test.args)
+			if (err != nil) != test.wantErr {
+				t.Errorf("\x1b[31;1mParkingLot.GetSlotByVehicleRegistrationNo() error = %v, wantSlots %v", err, test.wantErr)
+			}
+			if occupiedSlots != nil && !reflect.DeepEqual(occupiedSlots, test.want) {
+				t.Errorf("\x1b[31;1mParkingLot.GetSlotByVehicleColor() error = %v, wantErr %v", err, test.wantErr)
+			}
+		})
+	}
+}
+
+func TestGetFilledSlots(t *testing.T) {
+	type parklot struct {
+		capacity int
+		slots    []*ParkingSlot
+	}
+	type testVehicle struct {
+		car Vehicle
+	}
+	tests := []struct {
+		name      string
+		parklot   parklot
+		want      *ParkingSlot
+		wantSlots int
+	}{
+		{
+			"TestCase 1: Parking slots is not empty",
+			parklot{
+				capacity: 3,
+				slots: []*ParkingSlot{
+					{
+						occupied: false,
+						slotNo:   1,
+						vehicle:  nil,
+					},
+					{
+						occupied: false,
+						slotNo:   2,
+						vehicle:  nil,
+					},
+					{
+						occupied: true,
+						slotNo:   3,
+						vehicle:  &Vehicle{registrationNo: "KA01-1498", color: "Red"},
+					},
+				},
+			},
+			&ParkingSlot{
+				occupied: true,
+				slotNo:   3,
+				vehicle:  &Vehicle{registrationNo: "KA01-1498", color: "Red"},
+			},
+			1,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			testParkingLot := &ParkingLot{
+				capacity: test.parklot.capacity,
+				slots:    test.parklot.slots,
+			}
+			occupiedSlots := testParkingLot.GetFilledSlots()
+			if len(occupiedSlots) != test.wantSlots || !reflect.DeepEqual(occupiedSlots[0], test.want) {
+				t.Errorf("\x1b[31;1mParkingLot.GetSlotByVehicleColor() error = , wantSlots %v", test.wantSlots)
+			}
+		})
+	}
 }

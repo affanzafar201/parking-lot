@@ -43,15 +43,16 @@ bin/parking_lot input.txt
 #### 4.2 Running the application in Interactive mode:
 
 ```golang
-bin/main
+../bin/parking_lot
 ```
 
 ## 5. Test Cases
-- Total number of test cases - 6 
-- Code coverage - 45%
+- Code coverage - approx 95% in model package
 
 #### 5.1 For running the tests
 
 ```golang
-golang test src/model --cover
+go test model --cover
 ```
+
+

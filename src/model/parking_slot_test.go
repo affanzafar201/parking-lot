@@ -6,14 +6,14 @@ import (
 	"testing"
 )
 
-/*func TestCreateParkingLot(t *testing.T) {
-	testParkingLot := CreateParkingLot(6)
-	if testParkingLot == nil {
-		t.Errorf("Failed to create parking lot")
-	} else if testParkingLot.capacity != 6 {
-		t.Errorf("Failed to create parking lot with want capacity %v, got %v", testParkingLot.capacity, 6)
+func TestCreateParkingSlot(t *testing.T) {
+	testParkingSlot := NewParkingSlot(1)
+	if testParkingSlot == nil {
+		t.Errorf("Failed to create parking slot")
+	} else if testParkingSlot.GetSlotNo() != 1 {
+		t.Errorf("Failed to create parking lot with slotNo %v, got %v", 1, testParkingSlot.GetSlotNo())
 	}
-}*/
+}
 
 func TestAllotVehicle(t *testing.T) {
 	type parkslot struct {

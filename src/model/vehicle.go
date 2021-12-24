@@ -15,16 +15,8 @@ func NewVehicle(registrationNo string, color string) *Vehicle {
 	return v
 }
 
-func (v *Vehicle) SetRegistrationNo(registrationNo string) {
-	v.registrationNo = registrationNo
-}
-
 func (v *Vehicle) GetRegistrationNo() string {
 	return v.registrationNo
-}
-
-func (v *Vehicle) SetColor(color string) {
-	v.color = color
 }
 
 func (v *Vehicle) GetColor() string {
