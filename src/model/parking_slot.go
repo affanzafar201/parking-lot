@@ -14,8 +14,16 @@ func NewParkingSlot(slotNo int) *ParkingSlot {
 	return p
 }
 
+func (p *ParkingSlot) GetVehicle() *Vehicle {
+	return p.vehicle
+}
+
+func (p *ParkingSlot) GetSlotNo() int {
+	return p.slotNo
+}
+
 func (p *ParkingSlot) isAvailable() bool {
-	return p.occupied
+	return !p.occupied
 }
 
 func (p *ParkingSlot) freeParkingSpot() {
